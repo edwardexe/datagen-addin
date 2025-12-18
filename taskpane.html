@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataGen Statistics</title>
+
+    <!-- Office.js library -->
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="taskpane.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DataGen Statistics</h1>
+            <p class="subtitle" id="statusMessage">Loading...</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="descriptives">Descriptives</button>
+            <button class="tab-btn" data-tab="statistics">Statistics</button>
+            <button class="tab-btn" data-tab="generate">Generate</button>
+        </nav>
+
+        <!-- Descriptives Tab -->
+        <section id="descriptives" class="tab-content active">
+            <div class="stats-table-container">
+                <table class="stats-table" id="descriptivesTable">
+                    <thead>
+                        <tr>
+                            <th class="row-label"></th>
+                            <th id="var1-header">Variable 1</th>
+                            <th id="var2-header">Variable 2</th>
+                            <th id="var3-header">Variable 3</th>
+                            <th id="var4-header">Variable 4</th>
+                            <th id="var5-header">Variable 5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-label">N</td>
+                            <td id="n-1">-</td>
+                            <td id="n-2">-</td>
+                            <td id="n-3">-</td>
+                            <td id="n-4">-</td>
+                            <td id="n-5">-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Mean</td>
+                            <td id="mean-1">-</td>
+                            <td id="mean-2">-</td>
+                            <td id="mean-3">-</td>
+                            <td id="mean-4">-</td>
+                            <td id="mean-5">-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Median</td>
+                            <td id="median-1">-</td>
+                            <td id="median-2">-</td>
+                            <td id="median-3">-</td>
+                            <td id="median-4">-</td>
+                            <td id="median-5">-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Mode</td>
+                            <td id="mode-1">-</td>
+                            <td id="mode-2">-</td>
+                            <td id="mode-3">-</td>
+                            <td id="mode-4">-</td>
+                            <td id="mode-5">-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Std Dev</td>
+                            <td id="stddev-1">-</td>
+                            <td id="stddev-2">-</td>
+                            <td id="stddev-3">-</td>
+                            <td id="stddev-4">-</td>
+                            <td id="stddev-5">-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Variance</td>
+                            <td id="variance-1">-</td>
+                            <td id="variance-2">-</td>
+                            <td id="variance-3">-</td>
+                            <td id="variance-4">-</td>
+                            <td id="variance-5">-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Min</td>
+                            <td id="min-1">-</td>
+                            <td id="min-2">-</td>
+                            <td id="min-3">-</td>
+                            <td id="min-4">-</td>
+                            <td id="min-5">-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Max</td>
+                            <td id="max-1">-</td>
+                            <td id="max-2">-</td>
+                            <td id="max-3">-</td>
+                            <td id="max-4">-</td>
+                            <td id="max-5">-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Range</td>
+                            <td id="range-1">-</td>
+                            <td id="range-2">-</td>
+                            <td id="range-3">-</td>
+                            <td id="range-4">-</td>
+                            <td id="range-5">-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Sum</td>
+                            <td id="sum-1">-</td>
+                            <td id="sum-2">-</td>
+                            <td id="sum-3">-</td>
+                            <td id="sum-4">-</td>
+                            <td id="sum-5">-</td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Sum of Sq</td>
+                            <td id="sumsq-1">-</td>
+                            <td id="sumsq-2">-</td>
+                            <td id="sumsq-3">-</td>
+                            <td id="sumsq-4">-</td>
+                            <td id="sumsq-5">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-primary" id="refreshDescriptives">Refresh Statistics</button>
+        </section>
+
+        <!-- Statistics Tab (Inferential) -->
+        <section id="statistics" class="tab-content">
+            <div class="stats-panel" id="oneVarStats">
+                <h3>One Variable Selected</h3>
+                <div class="stat-display">
+                    <img src="assets/one-sample-t.png" alt="One Sample t-test" class="formula-img">
+                    <p>Select a single column of data to see one-sample statistics.</p>
+                </div>
+            </div>
+
+            <div class="stats-panel" id="twoVarStats" style="display: none;">
+                <h3>Two Variables Selected</h3>
+                <div class="stat-row">
+                    <label>Correlation (r):</label>
+                    <span id="correlation">-</span>
+                </div>
+                <div class="stat-row">
+                    <label>r²:</label>
+                    <span id="r-squared">-</span>
+                </div>
+                <div class="stat-row">
+                    <label>Slope:</label>
+                    <span id="slope">-</span>
+                </div>
+                <div class="stat-row">
+                    <label>Intercept:</label>
+                    <span id="intercept">-</span>
+                </div>
+                <div class="stat-row">
+                    <label>t (ind):</label>
+                    <span id="t-independent">-</span>
+                </div>
+            </div>
+
+            <div class="stats-panel" id="pairedStats" style="display: none;">
+                <h3>Paired Data</h3>
+                <div class="stat-row">
+                    <label>t (paired):</label>
+                    <span id="t-paired">-</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="refreshStatistics">Refresh Statistics</button>
+        </section>
+
+        <!-- Generate Tab -->
+        <section id="generate" class="tab-content">
+            <h3>Generate Random Data</h3>
+
+            <div class="form-group">
+                <label for="distType">Distribution:</label>
+                <select id="distType">
+                    <option value="normal">Normal</option>
+                    <option value="uniform">Uniform</option>
+                    <option value="sequence">Sequence</option>
+                </select>
+            </div>
+
+            <div id="normalParams">
+                <div class="form-group">
+                    <label for="mean">Mean:</label>
+                    <input type="number" id="mean" value="0" step="any">
+                </div>
+                <div class="form-group">
+                    <label for="stdDev">Std Dev:</label>
+                    <input type="number" id="stdDev" value="1" step="any" min="0">
+                </div>
+            </div>
+
+            <div id="uniformParams" style="display: none;">
+                <div class="form-group">
+                    <label for="minVal">Minimum:</label>
+                    <input type="number" id="minVal" value="0" step="any">
+                </div>
+                <div class="form-group">
+                    <label for="maxVal">Maximum:</label>
+                    <input type="number" id="maxVal" value="100" step="any">
+                </div>
+            </div>
+
+            <div id="sequenceParams" style="display: none;">
+                <div class="form-group">
+                    <label for="startVal">Start:</label>
+                    <input type="number" id="startVal" value="1" step="any">
+                </div>
+                <div class="form-group">
+                    <label for="increment">Increment:</label>
+                    <input type="number" id="increment" value="1" step="any">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="decimals">Decimal Places:</label>
+                <select id="decimals">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="rowCount">Number of Rows:</label>
+                <input type="number" id="rowCount" value="200" min="1" max="200">
+            </div>
+
+            <p class="help-text">Select a column in the spreadsheet, then click Generate.</p>
+
+            <button class="btn btn-primary" id="generateData">Generate Data</button>
+        </section>
+
+        <footer>
+            <p>DataGen Statistics Add-in v1.0</p>
+            <p class="credits">Based on DataGen by Dr. Russell Hurlburt</p>
+        </footer>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="taskpane.js"></script>
+</body>
+</html>
